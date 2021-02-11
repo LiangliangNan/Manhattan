@@ -30,4 +30,4 @@ endif ()
 
 target_include_directories(${PROJECT_NAME} PRIVATE ${EASY3D_INCLUDE_DIRS})
 
-target_link_libraries(${PROJECT_NAME} ${EASY3D_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} easy3d::viewer)
