@@ -1,3 +1,4 @@
 cmake-*
 resources
 .idea
+build
