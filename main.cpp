@@ -24,7 +24,7 @@
 
 #include <easy3d/util/logging.h>
 #include <easy3d/viewer/viewer.h>
-#include <easy3d/renderer/opengl.h>
+#include <easy3d/fileio/resources.h>
 
 
 using namespace easy3d;
@@ -35,11 +35,11 @@ int main(int argc, char** argv) {
 
     Viewer viewer("Test");
 
-    const std::string file_name = "/Users/lnan/Projects/Easy3D/resources/data/sphere.obj";
-//    if (!viewer.add_model(file_name)) {
-//        LOG(ERROR) << "Error: failed to load model. Please make sure the file exists and format is correct.";
-//        return EXIT_FAILURE;
-//    }
+    const std::string file_name = resource::directory() + "/data/sphere.obj";
+    if (!viewer.add_model(file_name)) {
+        LOG(ERROR) << "Error: failed to load model. Please make sure the file exists and format is correct.";
+        return EXIT_FAILURE;
+    }
 
     return viewer.run();
 }
