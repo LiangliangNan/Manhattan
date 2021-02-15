@@ -25,6 +25,7 @@
 #include <easy3d/util/logging.h>
 #include <easy3d/viewer/viewer.h>
 #include <easy3d/fileio/resources.h>
+#include <easy3d/algo_ext/surfacer.h>
 
 
 using namespace easy3d;
@@ -33,13 +34,16 @@ int main(int argc, char** argv) {
     // Initialize logging.
     logging::initialize();
 
-    Viewer viewer("Test");
+    const std::string file_name = resource::directory() + "/data/repair/self_intersection/two_spheres.obj";
 
-    const std::string file_name = resource::directory() + "/data/sphere.obj";
+    Viewer viewer("Test");
     if (!viewer.add_model(file_name)) {
         LOG(ERROR) << "Error: failed to load model. Please make sure the file exists and format is correct.";
         return EXIT_FAILURE;
     }
+
+    if (dynamic_cast<SurfaceMesh*>(viewer.current_model()))
+        Surfacer::remesh_self_intersections(dynamic_cast<SurfaceMesh*>(viewer.current_model()));
 
     return viewer.run();
 }

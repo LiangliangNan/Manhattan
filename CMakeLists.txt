@@ -11,4 +11,4 @@ find_package(Easy3D REQUIRED)
 
 add_executable(${PROJECT_NAME} main.cpp)
 
-target_link_libraries(${PROJECT_NAME} easy3d::viewer)
+target_link_libraries(${PROJECT_NAME} easy3d::algo_ext easy3d::viewer)
