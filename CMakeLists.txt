@@ -4,14 +4,14 @@ cmake_minimum_required(VERSION 3.1)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-get_filename_component(PROJECT_NAME ${CMAKE_CURRENT_SOURCE_DIR} NAME)
-project(${PROJECT_NAME})
+project(Test)
 
 find_package(Easy3D REQUIRED)
 
-add_executable(${PROJECT_NAME} main.cpp)
+add_executable(Test main.cpp)
 
-target_link_libraries(${PROJECT_NAME} easy3d::algo_ext easy3d::viewer)
+target_link_libraries(Test easy3d::algo_ext easy3d::viewer)
+
 #
 #
 #set_target_properties(${PROJECT_NAME} PROPERTIES
