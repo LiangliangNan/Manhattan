@@ -6,11 +6,13 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 project(Test)
 
+# request Easy3D
 find_package(Easy3D REQUIRED)
 
 add_executable(Test main.cpp)
 
-target_link_libraries(Test easy3d::algo_ext easy3d::viewer)
+# link to the viewer module of Easy3D
+target_link_libraries(Test easy3d::viewer easy3d::algo_ext)
 
 #
 #
