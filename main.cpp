@@ -25,6 +25,8 @@
 #include <easy3d/util/logging.h>
 #include <easy3d/viewer/viewer.h>
 #include <easy3d/fileio/resources.h>
+#include <easy3d/renderer/renderer.h>
+#include <easy3d/renderer/drawable_lines.h>
 #include <easy3d/algo_ext/surfacer.h>
 
 
@@ -42,8 +44,11 @@ int main(int argc, char** argv) {
         return EXIT_FAILURE;
     }
 
-    if (dynamic_cast<SurfaceMesh*>(viewer.current_model()))
-        Surfacer::remesh_self_intersections(dynamic_cast<SurfaceMesh*>(viewer.current_model()));
+    auto mesh = dynamic_cast<SurfaceMesh *>(viewer.current_model());
+    if (mesh) {
+        Surfacer::remesh_self_intersections(mesh);
+        mesh->renderer()->get_lines_drawable("edges")->set_visible(true);
+    }
 
     return viewer.run();
 }
