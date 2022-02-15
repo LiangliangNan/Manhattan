@@ -29,6 +29,7 @@
 #include <easy3d/renderer/drawable_lines.h>
 #include <easy3d/algo_ext/surfacer.h>
 
+#include "mesh_manhattan.h"
 
 using namespace easy3d;
 
@@ -36,17 +37,19 @@ int main(int argc, char** argv) {
     // Initialize logging.
     logging::initialize();
 
-    const std::string file_name = resource::directory() + "/data/repair/self_intersection/two_spheres.obj";
+    const std::string dir = "/Users/lnan/Documents/Projects/UsingEasy3D/data";
 
     Viewer viewer("Test");
-    if (!viewer.add_model(file_name)) {
+    if (!viewer.add_model(dir + "/model1.obj")) {
         LOG(ERROR) << "Error: failed to load model. Please make sure the file exists and format is correct.";
         return EXIT_FAILURE;
     }
 
     auto mesh = dynamic_cast<SurfaceMesh *>(viewer.current_model());
     if (mesh) {
-        Surfacer::remesh_self_intersections(mesh);
+        MeshManhattan::apply(mesh);
+        mesh->renderer()->update();
+//        Surfacer::remesh_self_intersections(mesh);
         mesh->renderer()->get_lines_drawable("edges")->set_visible(true);
     }
 
