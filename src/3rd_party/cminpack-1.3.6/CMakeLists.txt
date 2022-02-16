@@ -60,7 +60,7 @@ set (cminpack_hdrs
 add_library (3rd_cminpack ${cminpack_srcs})
 
 if (${CMAKE_SYSTEM_NAME} STREQUAL "FreeBSD")
-  TARGET_LINK_LIBRARIES(cminpack m)
+  TARGET_LINK_LIBRARIES(3rd_cminpack m)
 endif()
 
 
@@ -70,7 +70,7 @@ check_function_exists (sqrt HAVE_SQRT_NO_LIBM)
 if (NOT HAVE_SQRT_NO_LIBM)
   check_library_exists ("m" sqrt "" HAVE_LIBM)
   if (HAVE_LIBM)
-    target_link_libraries(cminpack PUBLIC m)
+    target_link_libraries(3rd_cminpack PUBLIC m)
   endif()
 endif ()
 
@@ -78,9 +78,9 @@ endif ()
 if (USE_BLAS)
   find_package (CBLAS)
   if (CBLAS_FOUND)
-    target_link_libraries(cminpack PUBLIC ${CBLAS_LIBRARIES})
-    set_target_properties(cminpack PROPERTIES LINK_FLAGS "${CBLAS_LINKER_FLAGS}")
-    target_compile_definitions(cminpack PUBLIC USE_CBLAS)
+    target_link_libraries(3rd_cminpack PUBLIC ${CBLAS_LIBRARIES})
+    set_target_properties(3rd_cminpack PROPERTIES LINK_FLAGS "${CBLAS_LINKER_FLAGS}")
+    target_compile_definitions(3rd_cminpack PUBLIC USE_CBLAS)
   endif()
 endif()
 
