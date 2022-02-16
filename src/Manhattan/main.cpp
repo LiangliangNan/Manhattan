@@ -36,7 +36,7 @@ int main(int argc, char** argv) {
     // Initialize logging.
     logging::initialize(true);
 
-    const std::string model_file = std::string(DATA_DIR) + "/model2.obj";
+    const std::string model_file = std::string(DATA_DIR) + "/model1.obj";
 
     CompViewer viewer(2, 2, "Manhattan");
     viewer.usage_func_ = []() { return ""; };
@@ -68,7 +68,7 @@ int main(int argc, char** argv) {
     // setup content for view(1, 0): the wireframe of the input mesh
     auto input_wireframe = input_mesh->renderer()->get_lines_drawable("edges");
     input_wireframe->set_impostor_type(LinesDrawable::CYLINDER);
-    input_wireframe->set_line_width(3);
+    input_wireframe->set_line_width(2);
     input_wireframe->set_uniform_coloring(vec4(0.7f, 0.7f, 1.0f, 1.0f));
     input_wireframe->set_visible(true); // by default wireframe is hidden
     viewer.assign(1, 0, input_wireframe);
@@ -81,7 +81,7 @@ int main(int argc, char** argv) {
     // setup content for view(1, 1): the wireframe of the output mesh
     auto output_wireframe = output_mesh->renderer()->get_lines_drawable("edges");
     output_wireframe->set_impostor_type(LinesDrawable::CYLINDER);
-    output_wireframe->set_line_width(3);
+    output_wireframe->set_line_width(2);
     output_wireframe->set_uniform_coloring(vec4(0.7f, 0.7f, 1.0f, 1.0f));
     output_wireframe->set_visible(true); // by default wireframe is hidden
     viewer.assign(1, 1, output_wireframe);
