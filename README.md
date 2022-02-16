@@ -1,7 +1,7 @@
 # Manhattan
 Given a mesh, Manhattan makes 
  - all consecutive edges orthogonal
- - all faces coplanar
+ - all faces planar
 
 <p align="center"> 
      <img src="./image/manhattan.png" width="600"> 
