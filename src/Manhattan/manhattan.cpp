@@ -1,3 +1,30 @@
+/********************************************************************
+ * Copyright (C) 2015 Liangliang Nan <liangliang.nan@gmail.com>
+ * https://3d.bk.tudelft.nl/liangliang/
+ *
+ * This file is part of Easy3D. If it is useful in your research/work,
+ * I would be grateful if you show your appreciation by citing it:
+ * ------------------------------------------------------------------
+ *      Liangliang Nan.
+ *      Easy3D: a lightweight, easy-to-use, and efficient C++ library
+ *      for processing and rendering 3D data.
+ *      Journal of Open Source Software, 6(64), 3255, 2021.
+ * ------------------------------------------------------------------
+ *
+ * Easy3D is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License Version 3
+ * as published by the Free Software Foundation.
+ *
+ * Easy3D is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ ********************************************************************/
+
+
 #include "manhattan.h"
 #include <optimizer_lm.h>
 
@@ -63,8 +90,8 @@ namespace easy3d {
 
 
         void collect_constraints(SurfaceMesh *mesh, Data *data, double ortho_thresh) {
-#if 1
-            for (auto f : mesh->faces()) {
+            // orthogonality constraints
+            for (auto f: mesh->faces()) {
                 SurfaceMesh::HalfedgeAroundFaceCirculator cir(mesh, f);
                 SurfaceMesh::HalfedgeAroundFaceCirculator end = cir;
                 do {
@@ -85,9 +112,9 @@ namespace easy3d {
                     ++cir;
                 } while (cir != end);
             }
-#endif
 
-            for (auto f : mesh->faces()) {
+            // planarity constraints
+            for (auto f: mesh->faces()) {
 #if 1
                 SurfaceMesh::HalfedgeAroundFaceCirculator cir(mesh, f);
                 SurfaceMesh::HalfedgeAroundFaceCirculator end = cir;
@@ -137,6 +164,7 @@ namespace easy3d {
     class Objective : public Objective_LM {
     public:
         Objective(int num_func, int num_var, void *data) : Objective_LM(num_func, num_var, data) {}
+
         int evaluate(const double *x, double *fvec) {
             Data *all_data = reinterpret_cast<Data *>(data_);
             const std::vector<double> &X_orig = all_data->orig_pos;
@@ -199,8 +227,8 @@ namespace easy3d {
 
         std::vector<double> X_orig(mesh->n_vertices() * 3);
         auto points = mesh->get_vertex_property<vec3>("v:point");
-        for (auto v : mesh->vertices()) {
-            const auto& p = points[v];
+        for (auto v: mesh->vertices()) {
+            const auto &p = points[v];
             X_orig[v.idx() * 3] = p.x;
             X_orig[v.idx() * 3 + 1] = p.y;
             X_orig[v.idx() * 3 + 2] = p.z;
@@ -221,12 +249,12 @@ namespace easy3d {
         std::vector<double> x = X_orig; // provide the initial guess
         bool flag = lm.optimize(&obj, x);
         if (flag) {
-            for (auto v : mesh->vertices()) {
+            for (auto v: mesh->vertices()) {
                 points[v] = vec3(
                         x[v.idx() * 3],
                         x[v.idx() * 3 + 1],
                         x[v.idx() * 3 + 2]
-                        );
+                );
             }
             LOG(INFO) << "done. time: " << t.elapsed_seconds() << " seconds. " << itr_count << " evaluations";
         } else
