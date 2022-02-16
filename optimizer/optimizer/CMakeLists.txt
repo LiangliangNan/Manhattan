@@ -23,9 +23,9 @@ set_target_properties(${PROJECT_NAME} PROPERTIES FOLDER "solvers")
 target_compile_definitions(${PROJECT_NAME} PRIVATE OPTIMIZER_EXPORTS)
 
 target_include_directories(${PROJECT_NAME} PRIVATE
-    ${SOLVER_SUITE_optimizer_DIR}
-    ${SOLVER_SUITE_EXTERNAL_cminpack_DIR}
-    ${SOLVER_SUITE_EXTERNAL_liblbfgs_DIR}
+    ${MANHATTAN_optimizer_DIR}
+    ${MANHATTAN_EXTERNAL_cminpack_DIR}
+    ${MANHATTAN_EXTERNAL_liblbfgs_DIR}
 )
 
 target_link_libraries( ${PROJECT_NAME} PRIVATE liblbfgs cminpack)

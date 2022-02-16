@@ -1,8 +1,9 @@
 # The name of our project is "CMINPACK". CMakeLists files in this project can
 # refer to the root source directory of the project as ${CMINPACK_SOURCE_DIR} and
 # to the root binary directory of the project as ${CMINPACK_BINARY_DIR}.
-cmake_minimum_required (VERSION 2.8.9)
+cmake_minimum_required (VERSION 3.1)
 project (CMINPACK)
+
 string(TOLOWER ${PROJECT_NAME} PROJECT_NAME_LOWER)
 
 set (CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
@@ -11,7 +12,6 @@ include(${PROJECT_SOURCE_DIR}/cmake/cminpack_utils.cmake)
 # Set version and OS-specific settings
 set(CMINPACK_VERSION 1.3.6 CACHE STRING "CMinpack version")
 set(CMINPACK_SOVERSION 1 CACHE STRING "CMinpack API version")
-DISSECT_VERSION()
 GET_OS_INFO()
 
 # Add an "uninstall" target
@@ -36,7 +36,7 @@ else ()
   endif(WIN32)
 endif ()
 
-option(USE_BLAS "Compile cminpack using cblas library if possible" ON)
+option(USE_BLAS "Compile cminpack using cblas library if possible" OFF)
 
 #set(CMAKE_INSTALL_PREFIX ${PROJECT_SOURCE_DIR}/../build)
 
@@ -92,8 +92,6 @@ install (FILES ${cminpack_hdrs} DESTINATION ${CMINPACK_INCLUDE_INSTALL_DIR}
     COMPONENT cminpack_hdrs)
 
 set_target_properties (cminpack PROPERTIES POSITION_INDEPENDENT_CODE ON)
-
-set_target_properties(cminpack PROPERTIES VERSION ${CMINPACK_VERSION} SOVERSION ${CMINPACK_SOVERSION})
 
 add_subdirectory (cmake)
 #add_subdirectory (examples)

@@ -18,8 +18,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
 
-#ifndef SOLVER_SUITE_OPTIMIZER_LM_H
-#define SOLVER_SUITE_OPTIMIZER_LM_H
+#ifndef MANHATTAN_OPTIMIZER_LM_H
+#define MANHATTAN_OPTIMIZER_LM_H
 
 #include <vector>
 
@@ -173,4 +173,4 @@ private:
 };
 
 
-#endif  // SOLVER_SUITE_OPTIMIZER_LM_H
+#endif  // MANHATTAN_OPTIMIZER_LM_H

@@ -5,17 +5,13 @@ project(optimizer_example)
 
 
 add_executable(optimizer_example
-    main.cpp
-    examples_optimizer_lbfgs.cpp
-    examples_optimizer_lm.cpp
+        main.cpp
+        examples_optimizer_lbfgs.cpp
+        examples_optimizer_lm.cpp
         )
 
 set_target_properties(optimizer_example PROPERTIES FOLDER "examples")
 
-
-target_include_directories(${PROJECT_NAME} PRIVATE
-    ${SOLVER_SUITE_optimizer_DIR}
-)
-
+target_include_directories(${PROJECT_NAME} PRIVATE ${MANHATTAN_optimizer_DIR})
 
 target_link_libraries(optimizer_example optimizer)

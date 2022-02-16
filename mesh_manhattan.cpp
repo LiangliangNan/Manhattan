@@ -37,68 +37,59 @@ namespace easy3d {
         //////////////////////////////////////////////////////////////////////////
 
         inline double ortho_cost(const Ortho &ortho, const double X[]) {
-            int id0 = ortho.v_id0 * 3;
-            int id1 = ortho.v_id1 * 3;
-            int id2 = ortho.v_id2 * 3;
-
-            vec3 p0(X[id0], X[id0 + 1], X[id0 + 2]);
-            vec3 p1(X[id1], X[id1 + 1], X[id1 + 2]);
-            vec3 p2(X[id2], X[id2 + 1], X[id2 + 2]);
-
-            vec3 v10 = p0 - p1;
-            v10 = normalize(v10);
-            vec3 v12 = p2 - p1;
-            v12 = normalize(v12);
-            //return std::abs(dot(v10, v12)); // the function value will be squared
+            const vec3 p0(X + ortho.v_id0 * 3);
+            const vec3 p1(X + ortho.v_id1 * 3);
+            const vec3 p2(X + ortho.v_id2 * 3);
+            const vec3 v10 = (p0 - p1).normalize();
+            const vec3 v12 = (p2 - p1).normalize();
+            //return std::abs(dot(v10, v12)); // the function value will be squared, so no need to care about the sign
             return dot(v10, v12);
         }
 
 
         inline double facet_planar_cost(const Planar &planar, const double X[]) {
-            int id0 = planar.v_id0 * 3;
-            int id1 = planar.v_id1 * 3;
-            int id2 = planar.v_id2 * 3;
-            int id3 = planar.v_id3 * 3;
+            const vec3 p0(X + planar.v_id0 * 3);
+            const vec3 p1(X + planar.v_id1 * 3);
+            const vec3 p2(X + planar.v_id2 * 3);
+            const vec3 p3(X + planar.v_id3 * 3);
 
-            vec3 p0(X[id0], X[id0 + 1], X[id0 + 2]);
-            vec3 p1(X[id1], X[id1 + 1], X[id1 + 2]);
-            vec3 p2(X[id2], X[id2 + 1], X[id2 + 2]);
-            vec3 p3(X[id3], X[id3 + 1], X[id3 + 2]);
-
-            vec3 v01 = p1 - p0;
-            vec3 v03 = p3 - p0;
-            vec3 v02 = p2 - p0;
-            v02 = normalize(v02);
-            vec3 normal = cross(v01, v03);
-            normal = normalize(normal);
-            //return std::abs(dot(normal, v02)); // the function value will be squared
+            const vec3 v01 = p1 - p0;
+            const vec3 v03 = p3 - p0;
+            const vec3 v02 = (p2 - p0).normalize();
+            const vec3 normal = cross(v01, v03).normalize();
+            //return std::abs(dot(normal, v02)); // the function value will be squared, so no need to care about the sign
             return dot(normal, v02);
         }
 
 
-        void collect_constraints(SurfaceMesh *mesh, Data *data) {
+        void collect_constraints(SurfaceMesh *mesh, Data *data, double ortho_thresh) {
+#if 1
             for (auto f : mesh->faces()) {
-                SurfaceMesh::HalfedgeAroundFaceCirculator cir = mesh->halfedges(f);
+                SurfaceMesh::HalfedgeAroundFaceCirculator cir(mesh, f);
                 SurfaceMesh::HalfedgeAroundFaceCirculator end = cir;
                 do {
                     Ortho ortho;
 
-                    SurfaceMesh::Halfedge h = *cir;
-                    ortho.v_id0 = mesh->target(h).idx();
+                    SurfaceMesh::Halfedge h0 = *cir;
+                    ortho.v_id0 = mesh->target(h0).idx();
 
-                    SurfaceMesh::Halfedge h_next = mesh->next(h);
-                    ortho.v_id1 = mesh->target(h_next).idx();
+                    SurfaceMesh::Halfedge h1 = mesh->next(h0);
+                    ortho.v_id1 = mesh->target(h1).idx();
 
-                    SurfaceMesh::Halfedge h_next_next = mesh->next(h_next);
-                    ortho.v_id2 = mesh->target(h_next_next).idx();
+                    SurfaceMesh::Halfedge h2 = mesh->next(h1);
+                    ortho.v_id2 = mesh->target(h2).idx();
 
-                    data->ortho_constraints.push_back(ortho);
+                    const auto cost = ortho_cost(ortho, data->orig_pos.data());
+                    if (std::abs(cost) < ortho_thresh)
+                        data->ortho_constraints.push_back(ortho);
                     ++cir;
                 } while (cir != end);
             }
+#endif
 
             for (auto f : mesh->faces()) {
-                SurfaceMesh::HalfedgeAroundFaceCirculator cir = mesh->halfedges(f);
+#if 1
+                SurfaceMesh::HalfedgeAroundFaceCirculator cir(mesh, f);
                 SurfaceMesh::HalfedgeAroundFaceCirculator end = cir;
                 do {
                     Planar planar;
@@ -118,6 +109,23 @@ namespace easy3d {
                     data->planar_constraints.push_back(planar);
                     ++cir;
                 } while (cir != end);
+#else
+                Planar planar;
+
+                SurfaceMesh::Halfedge h0 = mesh->halfedge(f);
+                planar.v_id0 = mesh->target(h0).idx();
+
+                SurfaceMesh::Halfedge h1 = mesh->next(h0);
+                planar.v_id1 = mesh->target(h1).idx();
+
+                SurfaceMesh::Halfedge h2 = mesh->next(h1);
+                planar.v_id2 = mesh->target(h2).idx();
+
+                SurfaceMesh::Halfedge h3 = mesh->next(h2);
+                planar.v_id3 = mesh->target(h3).idx();
+
+                data->planar_constraints.push_back(planar);
+#endif
             }
         }
     }
@@ -161,6 +169,7 @@ namespace easy3d {
 
     void MeshManhattan::apply(
             SurfaceMesh *mesh,
+            double ortho_thresh,
             double w_orig_pos,
             double w_ortho,
             double w_facet_planar
@@ -170,13 +179,10 @@ namespace easy3d {
             return;
         }
 
-        if (!mesh->is_quad_mesh()) {
-            LOG(WARNING) << "currently implementation works on quad meshes only";
-//            return;
+        if (mesh->is_triangle_mesh()) {
+            LOG(WARNING) << "this is a triangle mesh and Manhattanization will not work";
+            return;
         }
-
-        if (!mesh->is_closed())
-            LOG(WARNING) << "may not work because mesh has seams/boundaries";
 
         LOG(INFO) << "enhancing Manhattan...";
         StopWatch t;
@@ -201,7 +207,7 @@ namespace easy3d {
         }
 
         data.orig_pos = X_orig;
-        collect_constraints(mesh, &data);
+        collect_constraints(mesh, &data, ortho_thresh);
 
         //////////////////////////////////////////////////////////////////////////
 

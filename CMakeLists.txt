@@ -8,12 +8,11 @@ project(${PROJECT_NAME})
 
 
 ### Configuration
-set(SOLVER_SUITE_ROOT        			${CMAKE_CURRENT_LIST_DIR})
-set(SOLVER_SUITE_EXTERNAL       		${SOLVER_SUITE_ROOT}/3rd_party)
-set(SOLVER_SUITE_EXTERNAL_cminpack_DIR          ${SOLVER_SUITE_EXTERNAL}/cminpack-1.3.6)
-set(SOLVER_SUITE_EXTERNAL_liblbfgs_DIR          ${SOLVER_SUITE_EXTERNAL}/liblbfgs)
-
-set(SOLVER_SUITE_optimizer_DIR                  ${SOLVER_SUITE_ROOT}/optimizer)
+set(MANHATTAN_ROOT        			 ${CMAKE_CURRENT_LIST_DIR})
+set(MANHATTAN_EXTERNAL       		 ${MANHATTAN_ROOT}/3rd_party)
+set(MANHATTAN_EXTERNAL_cminpack_DIR  ${MANHATTAN_EXTERNAL}/cminpack-1.3.6)
+set(MANHATTAN_EXTERNAL_liblbfgs_DIR  ${MANHATTAN_EXTERNAL}/liblbfgs)
+set(MANHATTAN_optimizer_DIR          ${MANHATTAN_ROOT}/optimizer)
 
 add_subdirectory(3rd_party)
 add_subdirectory(optimizer)
@@ -27,9 +26,10 @@ add_executable(${PROJECT_NAME}
         mesh_manhattan.cpp
         )
 
-target_include_directories(${PROJECT_NAME} PRIVATE
-        ${SOLVER_SUITE_optimizer_DIR}
-        )
+# The data directory
+target_compile_definitions(${PROJECT_NAME} PRIVATE "DATA_DIR=\"${MANHATTAN_ROOT}/data\"")
+
+target_include_directories(${PROJECT_NAME} PRIVATE ${MANHATTAN_optimizer_DIR})
 
 # link to the viewer module of Easy3D
-target_link_libraries(${PROJECT_NAME} easy3d::viewer easy3d::algo_ext optimizer)
+target_link_libraries(${PROJECT_NAME} easy3d::viewer optimizer)

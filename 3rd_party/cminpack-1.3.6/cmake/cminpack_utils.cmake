@@ -25,17 +25,3 @@ macro(GET_OS_INFO)
     set(CMINPACK_INCLUDE_INSTALL_DIR
         "include/${PROJECT_NAME_LOWER}-${CMINPACK_MAJOR_VERSION}")
 endmacro(GET_OS_INFO)
-
-
-macro(DISSECT_VERSION)
-    # Find version components
-    string(REGEX REPLACE "^([0-9]+).*" "\\1"
-        CMINPACK_MAJOR_VERSION "${CMINPACK_VERSION}")
-    string(REGEX REPLACE "^[0-9]+\\.([0-9]+).*" "\\1"
-        CMINPACK_MINOR_VERSION "${CMINPACK_VERSION}")
-    string(REGEX REPLACE "^[0-9]+\\.[0-9]+\\.([0-9]+)" "\\1"
-        CMINPACK_REVISION_VERSION ${CMINPACK_VERSION})
-    string(REGEX REPLACE "^[0-9]+\\.[0-9]+\\.[0-9]+(.*)" "\\1"
-        CMINPACK_CANDIDATE_VERSION ${CMINPACK_VERSION})
-endmacro(DISSECT_VERSION)
-

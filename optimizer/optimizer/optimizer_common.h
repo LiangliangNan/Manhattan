@@ -18,8 +18,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
 
-#ifndef SOLVER_SUITE_OPTIMIZER_COMMON_H
-#define SOLVER_SUITE_OPTIMIZER_COMMON_H
+#ifndef MANHATTAN_OPTIMIZER_COMMON_H
+#define MANHATTAN_OPTIMIZER_COMMON_H
 
 // The following ifdef block is the standard way of creating macros which make exporting
 // from a DLL simpler. All files within this DLL are compiled with the MATH_EXPORTS
@@ -48,4 +48,4 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #endif // WIN32
 
 
-#endif  // SOLVER_SUITE_OPTIMIZER_COMMON_H
+#endif  // MANHATTAN_OPTIMIZER_COMMON_H
