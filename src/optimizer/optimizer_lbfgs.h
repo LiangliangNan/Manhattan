@@ -29,12 +29,9 @@
 
 #include <vector>
 
-#include "optimizer_common.h"
-
 
 // objective function, allowing user problem to inherit from it.
-
-class OPTIMIZER_API Objective_LBFGS
+class Objective_LBFGS
 {
 public:
 
@@ -67,7 +64,7 @@ private:
 
 // More optimizers are available in ALGLIB
 
-class OPTIMIZER_API Optimizer_LBFGS
+class Optimizer_LBFGS
 {
 public:
     Optimizer_LBFGS();

@@ -30,9 +30,6 @@
 
 #include <vector>
 
-#include "optimizer_common.h"
-
-
 /**
 Optimizer_LM for nonlinear least squares problems using Levenberg-Marquardt method.
 It wraps the lmdif() part of cminpack (see http://devernay.free.fr/hacks/cminpack/index.html)
@@ -104,7 +101,7 @@ Where:
 */
 
 
-class OPTIMIZER_API Objective_LM
+class Objective_LM
 {
 public:
     //  @param  num_func    The number of functions
@@ -139,8 +136,7 @@ protected:
 
 
 // More optimizers are available in ALGLIB
-
-class OPTIMIZER_API Optimizer_LM
+class Optimizer_LM
 {
 public:
 	Optimizer_LM();

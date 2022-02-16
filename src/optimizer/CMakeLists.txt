@@ -5,7 +5,6 @@ project(${PROJECT_NAME})
 
 
 set(optimizer_HEADERS
-        optimizer_common.h
         optimizer_lbfgs.h
         optimizer_lm.h
         )
@@ -15,12 +14,7 @@ set(optimizer_SOURCES
         optimizer_lm.cpp
         )
 
-
 add_library(${PROJECT_NAME} STATIC ${optimizer_SOURCES} ${optimizer_HEADERS})
-
-set_target_properties(${PROJECT_NAME} PROPERTIES FOLDER "solvers")
-
-target_compile_definitions(${PROJECT_NAME} PRIVATE OPTIMIZER_EXPORTS)
 
 target_include_directories(${PROJECT_NAME} PRIVATE
         ${MANHATTAN_optimizer_DIR}
