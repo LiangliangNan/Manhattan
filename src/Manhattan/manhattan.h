@@ -34,8 +34,8 @@ namespace easy3d {
                 SurfaceMesh *mesh,
                 double ortho_thresh = 0.2,		 // the abs(dot_product) of two subsequent two edge vectors (normalized)
                 double w_orig_pos = 1.0,         // do not deviate too much from initial geometry
-                double w_ortho = 50.0,           // improve orthogonality
-                double w_facet_planar = 100.0    // enforce faces to be planar
+                double w_ortho = 500.0,          // improve orthogonality
+                double w_facet_planar = 500.0    // enforce faces to be planar
         );
     };
 }
