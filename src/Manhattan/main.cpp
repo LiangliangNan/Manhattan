@@ -58,7 +58,7 @@ int main(int argc, char** argv) {
     // now we Manhattanize the input mesh
     auto output_mesh = new SurfaceMesh(*input_mesh); // make a copy of the input mesh
     Manhattan::apply(output_mesh);  // Manhattanize the mesh
-    viewer.add_model(output_mesh);      // add the mesh to the viewer, so input and output are shown next to each other
+    viewer.add_model(output_mesh);  // add the mesh to the viewer, so input and output are shown next to each other
 
     // ---------------------------------------------------------------------------
     // setup content for view(0, 0): the surface of the input mesh (this is the default behavior)
