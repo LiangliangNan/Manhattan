@@ -60,6 +60,7 @@ int main(int argc, char** argv) {
     // now we Manhattanize the input mesh
     auto output_mesh = new SurfaceMesh(*input_mesh); // make a copy of the input mesh
     Manhattan::apply(output_mesh);  // Manhattanize the mesh
+    output_mesh->set_name("result");
     viewer.add_model(output_mesh);  // add the mesh to the viewer, so input and output are shown next to each other
 
     // ---------------------------------------------------------------------------
