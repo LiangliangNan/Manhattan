@@ -1,5 +1,5 @@
 # Manhattan
-Given a mesh, Manhattan makes 
+Given a polygonal mesh, Manhattan makes 
  - all consecutive edges orthogonal
  - all faces planar
 
