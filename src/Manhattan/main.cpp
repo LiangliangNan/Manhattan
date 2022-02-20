@@ -39,6 +39,7 @@ int main(int argc, char** argv) {
     logging::initialize();
 
     CompViewer viewer(2, 2, "Manhattan");
+    viewer.usage_string_ = "drag the mouse to rotate the model";
 
     // load the model
     const std::string model_file = std::string(DATA_DIR) + "/model1.obj";
