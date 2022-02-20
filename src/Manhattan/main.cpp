@@ -31,19 +31,17 @@
 
 #include "manhattan.h"
 
-
 using namespace easy3d;
+
 
 int main(int argc, char** argv) {
     // Initialize logging.
-    logging::initialize(true);
-
-    const std::string model_file = std::string(DATA_DIR) + "/model1.obj";
+    logging::initialize();
 
     CompViewer viewer(2, 2, "Manhattan");
-    viewer.usage_func_ = []() { return ""; };
 
     // load the model
+    const std::string model_file = std::string(DATA_DIR) + "/model1.obj";
     auto model = viewer.add_model(model_file);
     if (!model) {
         LOG(ERROR) << "failed to load model from file: " << model_file;
