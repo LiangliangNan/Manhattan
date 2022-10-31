@@ -8,10 +8,7 @@ project(${PROJECT_NAME})
 
 # request Easy3D
 find_package(Easy3D REQUIRED)
-# request Easy3D
-find_package(Easy3D REQUIRED)
 if (Easy3D_FOUND)
-    message(STATUS "Found Easy3D v${Easy3D_VERSION}")
     # if you need to the check the version: VERSION_LESS, VERSION_GREATER, VERSION_EQUAL, VERSION_LESS_EQUAL, or VERSION_GREATER_EQUAL
     if (Easy3D_VERSION VERSION_LESS "2.0")
         message(WARNING "The minimum version of Easy3D required is v2.0")
