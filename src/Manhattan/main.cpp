@@ -27,7 +27,7 @@
 #include <easy3d/viewer/comp_viewer.h>
 #include <easy3d/renderer/renderer.h>
 #include <easy3d/renderer/drawable_lines.h>
-#include <easy3d/util/logging.h>
+#include <easy3d/util/resources.h>
 
 #include "manhattan.h"
 
@@ -36,7 +36,7 @@ using namespace easy3d;
 
 int main(int argc, char** argv) {
     // Initialize logging.
-    logging::initialize();
+    initialize();
 
     CompViewer viewer(2, 2, "Manhattan");
     viewer.usage_string_ = "drag the mouse to rotate the model";
