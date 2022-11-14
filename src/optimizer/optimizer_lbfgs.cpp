@@ -27,6 +27,9 @@
 #include <optimizer_lbfgs.h>
 #include <include/lbfgs.h>
 
+#include <limits>
+#include <cstdio>
+
 
 Objective_LBFGS::Objective_LBFGS(const int n, void* data)
     : num_var_(n)
