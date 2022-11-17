@@ -35,7 +35,7 @@ using namespace easy3d;
 
 
 int main(int argc, char** argv) {
-    // Initialize logging.
+    // Initialize Easy3D.
     initialize();
 
     CompViewer viewer(2, 2, "Manhattan");
