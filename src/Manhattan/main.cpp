@@ -24,7 +24,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  ********************************************************************/
 
-#include <easy3d/viewer/comp_viewer.h>
+#include <easy3d/viewer/multi_viewer.h>
 #include <easy3d/renderer/renderer.h>
 #include <easy3d/renderer/drawable_lines.h>
 #include <easy3d/util/initializer.h>
@@ -38,7 +38,7 @@ int main(int argc, char** argv) {
     // Initialize Easy3D.
     initialize();
 
-    CompViewer viewer(2, 2, "Manhattan");
+    MultiViewer viewer(2, 2, "Manhattan");
     viewer.usage_string_ = "drag the mouse to rotate the model";
 
     // load the model
