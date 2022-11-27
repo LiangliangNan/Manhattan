@@ -49,7 +49,7 @@ int main(int argc, char** argv) {
         return EXIT_FAILURE;
     }
 
-    SurfaceMesh* input_mesh = dynamic_cast<SurfaceMesh*>(model);
+    auto input_mesh = dynamic_cast<SurfaceMesh*>(model);
     if (!input_mesh) {
         LOG(ERROR) << "the loaded model is not a surface mesh";
         return EXIT_FAILURE;

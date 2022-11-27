@@ -165,7 +165,7 @@ namespace easy3d {
     public:
         Objective(int num_func, int num_var, void *data) : Objective_LM(num_func, num_var, data) {}
 
-        int evaluate(const double *x, double *fvec) {
+        int evaluate(const double *x, double *fvec) override {
             Data *all_data = reinterpret_cast<Data *>(data_);
             const std::vector<double> &X_orig = all_data->orig_pos;
             const std::vector<Ortho> &ortho_constraints = all_data->ortho_constraints;
