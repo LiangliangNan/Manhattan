@@ -42,19 +42,25 @@ public:
     virtual ~Objective_LBFGS();
 
     /**
-     *  The lbfgs() function call this function to obtain the values of objective
-     *  function and its gradients when needed, given current values of variables.
-     *
-     *  @param  x           The current values of variables.
-     *  @param  g           The gradient vector. The callback function must compute
-     *                      the gradient values for the current variables.
-     *  It returns the value of the objective function for the current variables.
-     *
-     *  NOTE: This function implements the Rosenbrock function. A client problem
-     *        must implement this function to evaluate the values of the objective
-     *        function and its gradients.
+     *  Evaluate the values of the objective function and its gradients, given current values of variables.
+     *  This function will be called internally by the lbfgs() function when needed.
+     *  @param x    The current values of variables.
+     *  @param g    The gradient vector.
+     *  @return     The value of the objective function for the current variables.
+     *  @example The following code implements this function that aims at minimizing the Rosenbrock function:
+     *      @code
+     *          double fx = 0.0;
+     *          for (int i = 0; i < num_var_; i += 2) {
+     *              double t1 = 1.0 - x[i];
+     *              double t2 = 10.0 * (x[i+1] - x[i] * x[i]);
+     *              g[i+1] = 20.0 * t2;
+     *              g[i] = -2.0 * (x[i] * g[i+1] + t1);
+     *              fx += t1 * t1 + t2 * t2;
+     *          }
+     *          return fx;
+     *      @endcode
      */
-    inline virtual double evaluate(const double *x, double *g);
+    inline virtual double evaluate(const double *x, double *g) = 0;
 
 private:
     int     num_var_;

@@ -127,7 +127,7 @@ public:
      *      fvec[1] = x[1] - 1.0;
      *      return 0;
      */
-    virtual int evaluate(const double *x, double *fvec) = 0;
+    inline virtual int evaluate(const double *x, double *fvec) = 0;
 
 protected:
     int     num_func_;
