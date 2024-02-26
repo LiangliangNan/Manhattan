@@ -115,17 +115,18 @@ public:
     int num_variables() const { return num_var_; }
 
     /**
-     *  Calculate the values of each function at x and return this vector in f.
+     *  Calculate the values of each function at x and return this vector in f. A client problem must implement this
+     *  function to evaluate the values of each function.
      *  @param  x       The current values of variables.
      *  @param  fvec    Return the value vector of all the functions.
      *  @param  data    The user data sent to the optimizer by the client.
      *  @return         0 on success or a negative value to terminate.
-     *  @note: A client problem must implement this function to evaluate the values of each function. Below is an
-     *      example that aims at minimizing the objective function E = (x0 - 1.0)^2 + (x1 - 1.0)^2:
-     *  @code
-     *      fvec[0] = x[0] - 1.0;
-     *      fvec[1] = x[1] - 1.0;
-     *      return 0;
+     *  @example Below is an example that aims at minimizing the objective function E = (x0 - 1.0)^2 + (x1 - 1.0)^2:
+     *      @code
+     *          fvec[0] = x[0] - 1.0;
+     *          fvec[1] = x[1] - 1.0;
+     *          return 0;
+     *      @endcode
      */
     inline virtual int evaluate(const double *x, double *fvec) = 0;
 
