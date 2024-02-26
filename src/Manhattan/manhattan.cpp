@@ -35,7 +35,10 @@
 
 namespace easy3d {
 
+    static unsigned int itr_count = 0;
+
     namespace Details {
+
         struct Ortho {
             std::size_t v_id0;
             std::size_t v_id1;
@@ -155,45 +158,40 @@ namespace easy3d {
 #endif
             }
         }
+
+        class Objective : public Objective_LM {
+        public:
+            Objective(int num_func, int num_var, void *data) : Objective_LM(num_func, num_var, data) {}
+
+            int evaluate(const double *x, double *fvec) override {
+                Data *all_data = reinterpret_cast<Data *>(data_);
+                const std::vector<double> &X_orig = all_data->orig_pos;
+                const std::vector<Ortho> &ortho_constraints = all_data->ortho_constraints;
+                const std::vector<Planar> &planar_constraints = all_data->planar_constraints;
+
+                // orig pos
+                for (int i = 0; i < num_var_; ++i)
+                    fvec[i] = (x[i] - X_orig[i]) * all_data->w_orig_pos;
+
+                //////////////////////////////////////////////////////////////////////////
+
+                // ortho_constraints
+                std::size_t offset = num_var_;
+                for (std::size_t i = 0; i < ortho_constraints.size(); ++i)
+                    fvec[offset + i] = ortho_cost(ortho_constraints[i], x) * all_data->w_ortho;
+
+                //////////////////////////////////////////////////////////////////////////
+
+                // facet_planar_constraints
+                offset += ortho_constraints.size();
+                for (std::size_t i = 0; i < planar_constraints.size(); ++i)
+                    fvec[offset + i] = facet_planar_cost(planar_constraints[i], x) * all_data->w_facet_planar;
+
+                ++itr_count;
+                return 0;
+            }
+        };
     }
-
-    using namespace Details;
-
-    static unsigned int itr_count = 0;
-
-    class Objective : public Objective_LM {
-    public:
-        Objective(int num_func, int num_var, void *data) : Objective_LM(num_func, num_var, data) {}
-
-        int evaluate(const double *x, double *fvec) override {
-            Data *all_data = reinterpret_cast<Data *>(data_);
-            const std::vector<double> &X_orig = all_data->orig_pos;
-            const std::vector<Ortho> &ortho_constraints = all_data->ortho_constraints;
-            const std::vector<Planar> &planar_constraints = all_data->planar_constraints;
-
-            // orig pos
-            for (int i = 0; i < num_var_; ++i)
-                fvec[i] = (x[i] - X_orig[i]) * all_data->w_orig_pos;
-
-            //////////////////////////////////////////////////////////////////////////
-
-            // ortho_constraints
-            std::size_t offset = num_var_;
-            for (std::size_t i = 0; i < ortho_constraints.size(); ++i)
-                fvec[offset + i] = ortho_cost(ortho_constraints[i], x) * all_data->w_ortho;
-
-            //////////////////////////////////////////////////////////////////////////
-
-            // facet_planar_constraints
-            offset += ortho_constraints.size();
-            for (std::size_t i = 0; i < planar_constraints.size(); ++i)
-                fvec[offset + i] = facet_planar_cost(planar_constraints[i], x) * all_data->w_facet_planar;
-
-            ++itr_count;
-            return 0;
-        }
-    };
-
 
     void Manhattan::apply(
             SurfaceMesh *mesh,
@@ -220,7 +218,7 @@ namespace easy3d {
 
         //////////////////////////////////////////////////////////////////////////
 
-        Data data;
+        Details::Data data;
         data.w_orig_pos = std::sqrt(w_orig_pos);
         data.w_ortho = std::sqrt(w_ortho);
         data.w_facet_planar = std::sqrt(w_facet_planar);
@@ -244,7 +242,7 @@ namespace easy3d {
                         + data.ortho_constraints.size()
                         + data.planar_constraints.size();
 
-        Objective obj(m, n, &data);
+        Details::Objective obj(m, n, &data);
         Optimizer_LM lm;
         std::vector<double> x = X_orig; // provide the initial guess
         bool flag = lm.optimize(&obj, x);
