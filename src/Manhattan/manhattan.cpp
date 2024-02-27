@@ -245,7 +245,7 @@ namespace easy3d {
         Details::Objective obj(m, n, &data);
         Optimizer_LM lm;
         std::vector<double> x = X_orig; // provide the initial guess
-        bool flag = lm.optimize(&obj, x);
+        bool flag = lm.run(&obj, x);
         if (flag) {
             for (auto v: mesh->vertices()) {
                 points[v] = vec3(

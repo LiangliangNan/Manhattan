@@ -70,7 +70,7 @@ Optimizer_LM::Parameters::Parameters() {
 }
 
 
-bool Optimizer_LM::optimize(Objective_LM *func, double *x, Parameters *param)
+bool Optimizer_LM::run(Objective_LM *func, double *x, Parameters *param)
 {
 	// use default parameter if ctrl == 0
     if (!param)
@@ -163,6 +163,6 @@ bool Optimizer_LM::optimize(Objective_LM *func, double *x, Parameters *param)
 }
 
 
-bool Optimizer_LM::optimize(Objective_LM *func, std::vector<double>& x, Parameters *param) {
-    return optimize(func, x.data(), param);
+bool Optimizer_LM::run(Objective_LM *func, std::vector<double>& x, Parameters *param) {
+    return run(func, x.data(), param);
 }

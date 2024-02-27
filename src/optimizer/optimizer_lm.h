@@ -162,11 +162,14 @@ public:
 
 public:
 
-    //  func:   your evaluate function (no need to provide Jacobian)
-    //  x:      the variable vector (should be initialized with guess), which also returns the result.
-    //  param:  parameter for the optimizer (use default parameters if para is null).
-    bool optimize(Objective_LM* func, double* x, Parameters* para = nullptr);
-    bool optimize(Objective_LM* func, std::vector<double>& x, Parameters* para = nullptr);
+    /**
+     * The core function that minimizes the objective function.
+     * @param func   your evaluate function (no need to provide Jacobian)
+     * @param x      the variable vector (should be initialized with guess), which also returns the result.
+     * @param para   parameter for the optimizer (use default parameters if para is null).
+     */
+    bool run(Objective_LM* func, double* x, Parameters* para = nullptr);
+    bool run(Objective_LM* func, std::vector<double>& x, Parameters* para = nullptr);
 
 private:
     Parameters default_control_;		// control of this object

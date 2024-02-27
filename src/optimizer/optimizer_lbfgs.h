@@ -35,8 +35,11 @@ class Objective_LBFGS
 {
 public:
 
-    //  @param  n      The number of variables.
-    //  @param  data   The user data sent to lbfgs() function by the client.
+    /**
+     * Constructor.
+     * @param n    The number of variables.
+     * @param data The user data sent to lbfgs() function by the client.
+     */
     Objective_LBFGS(const int n, void* data = nullptr);
 
     virtual ~Objective_LBFGS();
@@ -76,26 +79,28 @@ public:
     Optimizer_LBFGS();
     virtual ~Optimizer_LBFGS();
 
-    // minimize the objective function.
-    // @param  func: the objective function.
-    // @param  n: number of variables
-    // @param  x: the variables whith provide the initial guess and return the results.
-    // return ture on success and false on failure.
+    /**
+     * The core function that minimizes the objective function.
+     * @param func the objective function.
+     * @param n    number of variables
+     * @param x    the variables which provide the initial guess and return the results.
+     * @return ture on success and false on failure.
+     */
     bool run(Objective_LBFGS* func, int n, double* x);
     bool run(Objective_LBFGS* func, int n, std::vector<double>& x);
 
-    // on success, allow user to query the final value of the objective function.
+    /// on success, allow user to query the final value of the objective function.
     double objective() const;
 
-    // on success, allow user to query the number of iterations of the optimization process
+    /// on success, allow user to query the number of iterations of the optimization process
     int iterations() const;
 
 protected:
 
     /* The interface to receive the progress of the optimization process.
-    *  The function returns zero to continue the optimization process.
-    *  Returning a non-zero value will cancel the optimization process.
-    */
+     * The function returns zero to continue the optimization process.
+     * Returning a non-zero value will cancel the optimization process.
+     */
     virtual int progress(
         const double *x,    // The current values of variables.
         const double *g,    // The current gradient values of variables.
